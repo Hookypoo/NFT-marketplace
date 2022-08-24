@@ -1,5 +1,5 @@
 import Debug "mo:base/Debug";
-import Principal "mo:base/Principal";
+import Principal "mo:base/principal";
 
 
 actor class NFT (name: Text, owner: Principal, content: [Nat8]) = this {
