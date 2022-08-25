@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Item from "./Item";
-import { Principal } from "principal";
+import { Principal } from "Principal";
 
 function Gallery(props) {
 
@@ -10,7 +10,7 @@ function Gallery(props) {
     if(props.ids != undefined) {
       setItems(
         props.ids.map( (NFTId) => (
-          <item id={NFTId} key={NFTId.toText()}/>
+          <Item id={NFTId} key={NFTId.toText()}/>
         ))
       )
     }
@@ -25,8 +25,9 @@ function Gallery(props) {
       <h3 className="makeStyles-title-99 Typography-h3">{props.title}</h3>
       <div className="disGrid-root disGrid-container disGrid-spacing-xs-2">
         <div className="disGrid-root disGrid-item disGrid-grid-xs-12">
-          <div className="disGrid-root disGrid-container disGrid-spacing-xs-5 disGrid-justify-content-xs-center"></div>
+          <div className="disGrid-root disGrid-container disGrid-spacing-xs-5 disGrid-justify-content-xs-center">
           {items}
+          </div>          
         </div>
       </div>
     </div>

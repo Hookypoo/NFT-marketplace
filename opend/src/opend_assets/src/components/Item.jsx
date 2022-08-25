@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import { Actor, HttpAgent } from "@dfinity/agent";
 import { idlFactory } from "../../../declarations/nft";
-import { Principal } from "@dfinity/principal";
+import { Principal } from "@dfinity/Principal";
 
 function Item(props) {
   const [name, setName] = useState();
