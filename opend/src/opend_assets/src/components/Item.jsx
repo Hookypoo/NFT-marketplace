@@ -17,9 +17,12 @@ function Item(props) {
 
     const localHost = "http://172.30.136.180:8080/";
     const agent = new HttpAgent({host: localHost});
+    //#TODO  remove the following line when deploying live
+    agent.fetchRootKey();
+    let NFTActor;
 
     async function loadNFT() {
-     const NFTActor = await Actor.createActor(idlFactory, { 
+      NFTActor = await Actor.createActor(idlFactory, { 
       agent,
       canisterId: id,
     });
@@ -60,8 +63,13 @@ function Item(props) {
     console.log("set price = " + price);
     const listingResult = await opend.listItem(props.id, Number(price) );
     console.log("listing: " + listingResult);
+    if(listingResult == "Success") {
+      const openDId = await opend.getOpenDCanisterID();
+      const tranferResult = await NFTActor.transferOnership(openDId);
+      console.log("transfer: " + tranferResult);
+    };
 
-  }
+  };
 
   return (
     <div className="disGrid-item">
