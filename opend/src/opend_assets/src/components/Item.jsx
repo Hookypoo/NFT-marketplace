@@ -61,11 +61,11 @@ function Item(props) {
 
   async function sellItem() {
     console.log("set price = " + price);
-    const listingResult = await opend.listItem(props.id, Number(price) );
+    const listingResult = await opend.listItem(props.id, Number(price));
     console.log("listing: " + listingResult);
     if(listingResult == "Success") {
       const openDId = await opend.getOpenDCanisterID();
-      const tranferResult = await NFTActor.transferOnership(openDId);
+      const tranferResult = await NFTActor.transferOwnership(openDId);
       console.log("transfer: " + tranferResult);
     };
 
