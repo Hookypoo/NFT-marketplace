@@ -12,14 +12,22 @@ function Item(props) {
   const [image, setImage] = useState();
   const [button, setButton] = useState();
   const [priceInput, setPriceInput] = useState();
+  const [loaderHidden, setLoaderHidden] = useState(true);
+  const [blur, setBlur] = useState();
+  const [sellStatus, setSellStatus] = useState();
 
     const id = props.id;     
 
-    const localHost = "http://172.30.136.180:8080/";
+    //http://172.30.139.115:8080/.....http://172.30.136.180:8080/ causes image display error
+
+    const localHost = "http://172.17.148.86:8080/";
     const agent = new HttpAgent({host: localHost});
+    //#TODO  remove the following line when deploying live
+    agent.fetchRootKey();
+    let NFTActor;
 
     async function loadNFT() {
-     const NFTActor = await Actor.createActor(idlFactory, { 
+      NFTActor = await Actor.createActor(idlFactory, { 
       agent,
       canisterId: id,
     });
@@ -35,7 +43,15 @@ function Item(props) {
     setOwner(owner.toText());
     setImage(image);
 
+    const nftListed = await opend.isListed(props.id);
+
+    if(nftListed) {
+      setOwner("OpenD");
+      setBlur({filter: "blur(4px)"});
+      setSellStatus("Listed");
+    } else {
     setButton(<Button handleClick={handleSell} text={"Sell"}/>);
+    }
   }
 
   useEffect(() => {
@@ -57,11 +73,26 @@ function Item(props) {
   }
 
   async function sellItem() {
+    setLoaderHidden(false);
     console.log("set price = " + price);
-    const listingResult = await opend.listItem(props.id, Number(price) );
-    console.log("listing: " + listingResult);
+    const listingResult = await opend.listItem(props.id, Number(price));
+    console.log("listing: " + listingResult)
+    if(listingResult == "success") {
+      const openDId = await opend.getOpenDCanisterID();
+      const transferResult = await NFTActor.transferOwnership(openDId);
 
-  }
+      console.log("transfer: " + transferResult);
+
+      if(transferResult == "Success") {
+        setLoaderHidden(true);
+        setButton();
+        setPriceInput();
+        setOwner("OpenD");
+        setSellStatus("Listed");
+      }
+    };
+
+  };
 
   return (
     <div className="disGrid-item">
@@ -69,10 +100,17 @@ function Item(props) {
         <img
           className="disCardMedia-root makeStyles-image-19 disCardMedia-media disCardMedia-img"
           src={ image }
+          style={blur}
         />
+         <div className="lds-ellipsis" hidden={loaderHidden}>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+      </div>
         <div className="disCardContent-root">
           <h2 className="disTypography-root makeStyles-bodyText-24 disTypography-h5 disTypography-gutterBottom">
-            { name }<span className="purple-text"></span>
+            { name }<span className="purple-text"> {sellStatus}</span>
           </h2>
           <p className="disTypography-root makeStyles-bodyText-24 disTypography-body2 disTypography-colorTextSecondary">
             Owner: { owner }

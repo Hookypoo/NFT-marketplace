@@ -14,6 +14,10 @@ function Minter() {
     setLoaderHidden(false);
     const name = data.name;
     const image = data.image[0];
+
+    // console.log(data.name);     // <--- remove after testing
+    // console.log(data.image);
+
     const imageArray = await image.arrayBuffer();
     const imageByteData = [...new Uint8Array(imageArray)];
 
