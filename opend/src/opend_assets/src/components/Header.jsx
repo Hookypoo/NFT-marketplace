@@ -64,9 +64,7 @@ function Header() {
       <Route path="/minter">
         <Minter />
       </Route>
-      <Route path="/collection">
-        {userOwnedGallery}
-      </Route>
+      <Route path="/collection">{userOwnedGallery}</Route>
     </Switch>
     </BrowserRouter>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Item from "./Item";
-import { Principal } from "Principal";
+import { Principal } from "@dfinity/principal";
 
 function Gallery(props) {
 
@@ -9,10 +9,9 @@ function Gallery(props) {
   function fetchNFTs() {
     if(props.ids != undefined) {
       setItems(
-        props.ids.map( (NFTId) => (
-          <Item id={NFTId} key={NFTId.toText()}/>
-        ))
-      )
+        props.ids.map((NFTId) => 
+          <Item id={NFTId} key={NFTId.toText()} />)
+      );
     }
   }
 

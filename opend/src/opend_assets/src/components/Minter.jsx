@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { opend } from "../../../declarations/opend";
-import { Principal } from "@dfinity/Principal";
+import { Principal } from "@dfinity/principal";
 import Item from "./Item";
 
 function Minter() {
@@ -21,7 +21,7 @@ function Minter() {
     console.log(newNFTID.toText());
     setNFTPrincipal(newNFTID);
     setLoaderHidden(true);
-  };
+  }
 
   if(nftPrincipal == "") {
     return (
