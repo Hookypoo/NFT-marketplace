@@ -40,22 +40,25 @@ function Item(props) {
     setOwner(owner.toText());
     setImage(image);
 
-    console.log("hello hooky");
-
-    const nftListed = await opend.isListed(props.id);
-
-    if(nftListed) {
-      setOwner("OpenD");
-      setBlur({filter: "blur(4px)"});
-      setSellStatus("Listed");
-    } else {
-    setButton(<Button handleClick={handleSell} text={"Sell"}/>);
+    
+      if(props.role = "collection") {
+        const nftListed = await opend.isListed(props.id);
+        if(nftListed) {
+          setOwner("OpenD");
+          setBlur({filter: "blur(4px)"});
+          setSellStatus("Listed");
+        } else {
+        setButton(<Button handleClick={handleSell} text={"Sell"}/>);
+        }
+    }else if(props.role = "discover") {
+      setButton(<Button handleClick={handleBuy} text={"Buy"}/>);
     }
   }
 
   useEffect(() => {
     loadNFT();
   }, []);
+  
   
   let price;
   function handleSell() {
@@ -88,10 +91,13 @@ function Item(props) {
         setPriceInput();
         setOwner("OpenD");
         setSellStatus("Listed");
-      }
+      };
     };
-
   };
+
+  async function handleBuy() {
+    console.log("Buy was triggered");
+  }
 
   return (
     <div className="disGrid-item">
