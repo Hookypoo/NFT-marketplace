@@ -14,6 +14,7 @@ function Item(props) {
   const [priceInput, setPriceInput] = useState();
   const [loaderHidden, setLoaderHidden] = useState(true);
   const [blur, setBlur] = useState();
+  const [sellStatus, setSellStatus] = useState();
 
     const id = props.id;     
 
@@ -46,8 +47,9 @@ function Item(props) {
     if(nftListed) {
       setOwner("OpenD");
       setBlur({filter: "blur(4px)"});
+      setSellStatus("Listed");
     } else {
-      setButton(<Button handleClick={handleSell} text={"Sell"}/>);
+    setButton(<Button handleClick={handleSell} text={"Sell"}/>);
     }
   }
 
@@ -70,7 +72,6 @@ function Item(props) {
   }
 
   async function sellItem() {
-    setBlur({filter: "blur(4px)"});
     setLoaderHidden(false);
     console.log("set price = " + price);
     const listingResult = await opend.listItem(props.id, Number(price));
@@ -86,8 +87,10 @@ function Item(props) {
         setButton();
         setPriceInput();
         setOwner("OpenD");
+        setSellStatus("Listed");
       }
-    }
+    };
+
   };
 
   return (
@@ -98,7 +101,7 @@ function Item(props) {
           src={ image }
           style={blur}
         />
-        <div className="lds-ellipsis" hidden={loaderHidden}>
+         <div className="lds-ellipsis" hidden={loaderHidden}>
           <div></div>
           <div></div>
           <div></div>
@@ -106,7 +109,7 @@ function Item(props) {
       </div>
         <div className="disCardContent-root">
           <h2 className="disTypography-root makeStyles-bodyText-24 disTypography-h5 disTypography-gutterBottom">
-            { name }<span className="purple-text"></span>
+            { name }<span className="purple-text"> {sellStatus}</span>
           </h2>
           <p className="disTypography-root makeStyles-bodyText-24 disTypography-body2 disTypography-colorTextSecondary">
             Owner: { owner }
